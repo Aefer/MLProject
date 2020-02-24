@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
-import net.minecraft.client.main.ModifyMain;
 
 public class MCLauncher {
 	File mcFile;
@@ -21,8 +20,9 @@ public class MCLauncher {
 		try {
 			loadJar(mcFile);
 			
-			ModifyMain.launch(concat(new String[] { "--version", "mcp", "--accessToken", "0", "--assetsDir", "assets",
-					"--assetIndex", "1.8", "--userProperties", "{}" }, args));
+			Class<?> clazz = Class.forName("net.minecraft.client.main.ModifyMain");
+			Method m = clazz.getDeclaredMethod("launch", String[].class);
+			m.invoke(clazz.newInstance(), (Object)concat(new String[] {"--version", "mcp", "--accessToken", "0", "--assetsDir", "assets\\", "--assetIndex", "1.8.9", "--userProperties", "{}" }, args));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
